@@ -1,0 +1,125 @@
+import flet as ft
+from controllers.event_handler import (on_result_gifs_picked, on_result_dest_folder_selected,
+                                       on_result_bootanim_zip_picked)
+
+from controllers import craft_handler
+from controllers import install_handler
+import subprocess
+from models.app_info import AppInfo
+from components import admob
+
+# type hinting <start>
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from views.craft_layout import CraftLayout
+    from views.install_layout import InstallLayout
+    from views.home_view import HomeView
+    from views.settings_view import SettingsLayout
+
+
+# type hinting <end>
+
+def pick_gif_files(*, craft_layout: 'CraftLayout', e):
+    craft_layout.app.file_picker.on_result = lambda x: on_result_gifs_picked(craft_layout, x)
+    craft_layout.app.file_picker.pick_files(dialog_title='Pick GIF Files',
+                                            allowed_extensions=['gif'],
+                                            allow_multiple=True)
+
+
+def select_dest_folder(*, craft_layout: 'CraftLayout', e):
+    craft_layout.app.file_picker.on_result = lambda x: on_result_dest_folder_selected(craft_layout, x)
+    craft_layout.app.file_picker.get_directory_path(dialog_title='Select Destination Folder')
+
+
+def pick_bootanimation_zip_file(*, install_layout: 'InstallLayout', e):
+    install_layout.app.file_picker.on_result = lambda x: on_result_bootanim_zip_picked(install_layout, e=x)
+    install_layout.app.file_picker.pick_files(dialog_title='Pick bootanimation file',
+                                              allowed_extensions=['zip'],
+                                              allow_multiple=False)
+
+
+@admob.show_interstitial_ad
+def reload_homeview_control_layout(*, home_view: 'HomeView', nav_index: int, e):
+    if nav_index == 0:
+        home_view.craft_layout = home_view.get_new_craft_layout()
+        home_view.controls = [home_view.craft_layout]
+    elif nav_index == 1:
+        home_view.install_layout = home_view.get_new_install_layout()
+        home_view.controls = [home_view.install_layout]
+    home_view.update()
+
+
+@admob.show_interstitial_ad
+def craft_bootanimation(*, craft_layout: 'CraftLayout', e):
+    craft_handler.start_craft(craft_layout=craft_layout)
+
+
+@admob.show_interstitial_ad
+def install_bootanimation(*, install_layout: 'InstallLayout', e):
+    install_handler.install(install_layout=install_layout)
+
+
+def toggle_theme_mode(*, home_view: 'HomeView', e):
+    if home_view.page.theme_mode == ft.ThemeMode.LIGHT:
+        home_view.page.theme_mode = ft.ThemeMode.DARK
+
+    elif home_view.page.theme_mode == ft.ThemeMode.DARK:
+        home_view.page.theme_mode = ft.ThemeMode.LIGHT
+
+    elif home_view.page.theme_mode == ft.ThemeMode.SYSTEM:
+        if home_view.page.platform_brightness == ft.Brightness.LIGHT:
+            home_view.page.theme_mode = ft.ThemeMode.DARK
+        elif home_view.page.platform_brightness == ft.Brightness.DARK:
+            home_view.page.theme_mode = ft.ThemeMode.LIGHT
+
+    home_view.page.update()
+    home_view.page.client_storage.set(key=AppInfo.THEME_MODE_KEY, value=home_view.page.theme_mode.value)
+
+
+@admob.show_interstitial_ad
+def goto_about_page(*, home_view: 'HomeView', e):
+    home_view.page.go('/about')
+
+
+@admob.show_interstitial_ad
+def goto_settings_page(*, home_view: 'HomeView', e):
+    home_view.page.go('/settings')
+
+
+@admob.show_interstitial_ad
+def goto_help_page(*, home_view: 'HomeView', e):
+    home_view.page.go('/help')
+
+
+def change_theme_mode(*, settings_layout: 'SettingsLayout', e):
+    if e.control.value == 'Light':
+        settings_layout.page.theme_mode = ft.ThemeMode.LIGHT
+    elif e.control.value == 'Dark':
+        settings_layout.page.theme_mode = ft.ThemeMode.DARK
+    elif e.control.value == 'System':
+        settings_layout.page.theme_mode = ft.ThemeMode.SYSTEM
+    settings_layout.page.update()
+    settings_layout.page.client_storage.set(key=AppInfo.THEME_MODE_KEY, value=settings_layout.page.theme_mode.value)
+
+
+def change_theme_color(*, settings_layout: 'SettingsLayout', color: ft.Colors, e):
+    settings_layout.page.theme = ft.Theme(color_scheme_seed=color)
+    settings_layout.page.dark_theme = ft.Theme(color_scheme_seed=color)
+    settings_layout.page.update()
+    settings_layout.page.client_storage.set(key=AppInfo.THEME_COLOR_KEY, value=color)
+
+
+def check_root_access(*, settings_layout: 'SettingsLayout', listile: ft.ListTile, e):
+    if settings_layout.page.platform == ft.PagePlatform.ANDROID:
+        process = subprocess.run('su -c echo hello'.split(), capture_output=True, text=True)
+    else:
+        process = subprocess.run('pkexec echo hello'.split(), capture_output=True, text=True)
+
+    if process.returncode == 0:
+        listile.subtitle.value = 'Rooted'
+        listile.subtitle.color = ft.Colors.GREEN
+    else:
+        listile.subtitle.value = f'exit code: {process.returncode}\n{process.stderr}'
+        listile.subtitle.color = ft.Colors.RED
+    listile.update()
