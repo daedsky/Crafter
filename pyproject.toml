@@ -8,7 +8,7 @@ authors = [
     { name = "daedsky", email = "you@example.com" }
 ]
 dependencies = [
-    "flet", "pillow", "flet-ads", "flet-permission-handler"
+    "flet", "pillow", "flet-ads", "flet-permission-handler", "pyjnius"
 ]
 
 [tool.flet]

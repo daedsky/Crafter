@@ -25,7 +25,7 @@ class ErrorAlertDialog(ft.AlertDialog):
         self.pagee: ft.Page = page  # Gives Error if used "self.page" so using "self.pagee"
         super().__init__(modal=True, title=ft.Text('Error'), content=ft.Text(content),
                          actions=[ft.TextButton('OK', on_click=lambda _: page.close(self))],
-                         *args, **kwargs)
+                         scrollable=True, *args, **kwargs)
 
     def show(self):
         self.pagee.open(self)
@@ -35,7 +35,8 @@ class InfoAlertDialog(ft.AlertDialog):
     def __init__(self, page: ft.Page, content: str, title: str = 'Info', **kwargs):
         self.pagee = page
         super().__init__(modal=True, title=ft.Text(title), content=ft.Text(content),
-                         actions=[ft.TextButton('OK', on_click=lambda _: page.close(self))])
+                         actions=[ft.TextButton('OK', on_click=lambda _: page.close(self))], scrollable=True,
+                         **kwargs)
 
     def show(self):
         self.pagee.open(self)

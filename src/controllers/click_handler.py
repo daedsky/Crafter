@@ -135,7 +135,7 @@ def show_console_log(*, home_view: 'HomeView', e):
     if fp is None: ErrorAlertDialog(page=home_view.page, content='File "console.log" not found').show(); return
     with open(fp, 'r') as f:
         log = f.read()
-    InfoAlertDialog(page=home_view.app.page, content=log, title='console log', scroll=ft.ScrollMode.AUTO).show()
+    InfoAlertDialog(page=home_view.app.page, content=log, title='console log').show()
 
 
 def clear_console_log(*, home_view: 'HomeView', e):

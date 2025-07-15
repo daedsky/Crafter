@@ -36,21 +36,18 @@ class InstallLayout(ft.Column):
         self.controls: list[ft.Control] = self.layout()
 
     def get_set_props(self):
-        def get_prop(argument: str):
-            return subprocess.run(['getprop', argument], capture_output=True, text=True).stdout.strip()
-
         if self.page.platform == ft.PagePlatform.ANDROID:
-            self.android_version = get_prop('ro.build.version.release')
-            self.android_manufacturer = get_prop('ro.product.manufacturer')
-            self.android_model = get_prop('ro.product.model')
-            self.android_codename = get_prop('ro.product.name')
-            self.android_system_name = get_prop('ro.product.system.name')
+            from jnius import autoclass
+            Version = autoclass('android.os.Build$VERSION')
+
+            self.android_version = Version.RELEASE
+            self.android_sdk_version = Version.SDK_INT
+            su_path = subprocess.run('which su'.split(), capture_output=True, text=True).stdout
+            self.su_status = f'Detected' if su_path else 'Not Detected!'
         else:
-            self.android_version = '435'
-            self.android_manufacturer = 'dell'
-            self.android_model = 'vostro3888'
-            self.android_codename = 'dvs3'
-            self.android_system_name = 'cachyos'
+            self.android_version = 'version'
+            self.android_sdk_version = 'manufacturer'
+            self.su_status = 'root status'
 
     @staticmethod
     def info_field(title, subtitle) -> ft.Column:
@@ -85,15 +82,13 @@ class InstallLayout(ft.Column):
 
         col_platform_name = self.info_field(title='Platform', subtitle=self.page.platform.name)
         col_android_version = self.info_field(title='Android Version', subtitle=self.android_version)
-        col_manufacturer = self.info_field(title='Manufacturer', subtitle=self.android_manufacturer)
-        col_model = self.info_field(title='Model', subtitle=self.android_model)
-        col_codename = self.info_field(title='Codename', subtitle=self.android_codename)
-        col_system_name = self.info_field(title='System Name', subtitle=self.android_system_name)
+        col_sdk_version = self.info_field(title='SDK Version', subtitle=self.android_sdk_version)
+        col_su_path = self.info_field(title='Root', subtitle=self.su_status)
 
         device_info_container = ft.Container(
             content=ft.Column(controls=[ft.Row([col_platform_name, col_android_version]),
-                                        ft.Row([col_manufacturer, col_model]),
-                                        ft.Row([col_codename, col_system_name])],
+                                        ft.Row([col_sdk_version, col_su_path]),
+                                        ],
                               spacing=10
                               ),
             padding=5, margin=0, bgcolor=ft.Colors.SURFACE_CONTAINER_HIGHEST,
