@@ -2,17 +2,20 @@ import flet as ft
 from views.home_view import HomeView
 from models.app_info import AppInfo
 from components import admob
+import flet_permission_handler as fph
+from components.custom_controls import InfoAlertDialog
 
 
 class CrafterApp:
-    def __init__(self, page: ft.Page):
-        self.APP_VERSION = "0.0.1-dev"
+    def __init__(self, page: ft.Page, debug: bool = False):
+        self.debug: bool = debug
         self.page: ft.Page = page
         self.file_picker: ft.FilePicker = ft.FilePicker()
         self.home_view: HomeView = HomeView(app=self, route='/')
         self.load_preferences()
         self.interstitial_ad = None
         self.setup_ads()
+        self.perms_handler: fph.PermissionHandler = fph.PermissionHandler()
 
     def load_preferences(self) -> None:
         client_storage = self.page.client_storage
@@ -36,3 +39,13 @@ class CrafterApp:
         if self.page.platform != ft.PagePlatform.ANDROID: return
         self.interstitial_ad = admob.get_new_interstitial_ad(app=self)
         self.page.overlay.append(self.interstitial_ad)
+
+    def check_and_ask_storage_perms(self) -> None:
+        if self.page.platform != ft.PagePlatform.ANDROID: return
+        storage = fph.PermissionType.MANAGE_EXTERNAL_STORAGE
+        status = self.perms_handler.check_permission(storage)
+
+        if status == fph.PermissionStatus.GRANTED: return
+        req = self.perms_handler.request_permission(storage)
+        if req != fph.PermissionStatus.GRANTED:
+            InfoAlertDialog(page=self.page, content="App may misbehave.", title="Permission denied").show()

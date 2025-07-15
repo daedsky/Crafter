@@ -8,7 +8,7 @@ authors = [
     { name = "daedsky", email = "you@example.com" }
 ]
 dependencies = [
-    "flet", "pillow", "flet-ads"
+    "flet", "pillow", "flet-ads", "flet-permission-handler"
 ]
 
 [tool.flet]
@@ -27,7 +27,7 @@ product = "Crafter"
 company = "Flet"
 
 # copyright text to display in about app dialogs
-copyright = "Copyright (C) 2025 by Flet"
+copyright = "Copyright (C) 2025 by daedsky"
 
 [tool.flet.app]
 path = "src"
@@ -36,6 +36,7 @@ path = "src"
 split_per_abi = true
 
 [tool.flet.android.permission]
+"android.permission.STORAGE" = true
 "android.permission.MANAGE_EXTERNAL_STORAGE" = true
 "com.google.android.gms.permission.AD_ID" = true
 

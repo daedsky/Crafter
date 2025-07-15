@@ -33,6 +33,7 @@ class HomeView(ft.View):
                      ],
             bgcolor=ft.Colors.SURFACE_CONTAINER_HIGHEST
         )
+        self.add_console_log_popup_items_to_appbar()
         self.navigation_bar: ft.NavigationBar = ft.NavigationBar(
             destinations=[ft.NavigationBarDestination(label='Home', icon=ft.Icons.HOME),
                           ft.NavigationBarDestination(label='Install', icon=ft.Icons.INSTALL_MOBILE)],
@@ -47,3 +48,13 @@ class HomeView(ft.View):
 
     def get_new_install_layout(self):
         return InstallLayout(app=self.app)
+
+    def add_console_log_popup_items_to_appbar(self):
+        if self.app.debug:
+            self.appbar.actions[-1].items.extend([
+                ft.PopupMenuItem(text='show console log', icon=ft.Icons.BUG_REPORT,
+                                 on_click=lambda x: ch.show_console_log(home_view=self, e=x)
+                                 ),
+                ft.PopupMenuItem(text='clear console log', icon=ft.Icons.CLEAR_ALL,
+                                 on_click=lambda x: ch.clear_console_log(home_view=self, e=x))
+            ])

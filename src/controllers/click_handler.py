@@ -7,6 +7,8 @@ from controllers import install_handler
 import subprocess
 from models.app_info import AppInfo
 from components import admob
+import os
+from components.custom_controls import InfoAlertDialog, ErrorAlertDialog
 
 # type hinting <start>
 from typing import TYPE_CHECKING
@@ -21,6 +23,7 @@ if TYPE_CHECKING:
 # type hinting <end>
 
 def pick_gif_files(*, craft_layout: 'CraftLayout', e):
+    craft_layout.app.check_and_ask_storage_perms()
     craft_layout.app.file_picker.on_result = lambda x: on_result_gifs_picked(craft_layout, x)
     craft_layout.app.file_picker.pick_files(dialog_title='Pick GIF Files',
                                             allowed_extensions=['gif'],
@@ -28,11 +31,13 @@ def pick_gif_files(*, craft_layout: 'CraftLayout', e):
 
 
 def select_dest_folder(*, craft_layout: 'CraftLayout', e):
+    craft_layout.app.check_and_ask_storage_perms()
     craft_layout.app.file_picker.on_result = lambda x: on_result_dest_folder_selected(craft_layout, x)
     craft_layout.app.file_picker.get_directory_path(dialog_title='Select Destination Folder')
 
 
 def pick_bootanimation_zip_file(*, install_layout: 'InstallLayout', e):
+    install_layout.app.check_and_ask_storage_perms()
     install_layout.app.file_picker.on_result = lambda x: on_result_bootanim_zip_picked(install_layout, e=x)
     install_layout.app.file_picker.pick_files(dialog_title='Pick bootanimation file',
                                               allowed_extensions=['zip'],
@@ -123,3 +128,30 @@ def check_root_access(*, settings_layout: 'SettingsLayout', listile: ft.ListTile
         listile.subtitle.value = f'exit code: {process.returncode}\n{process.stderr}'
         listile.subtitle.color = ft.Colors.RED
     listile.update()
+
+
+def show_console_log(*, home_view: 'HomeView', e):
+    fp = os.getenv('FLET_APP_CONSOLE')
+    if fp is None: ErrorAlertDialog(page=home_view.page, content='File "console.log" not found').show(); return
+    with open(fp, 'r') as f:
+        log = f.read()
+    InfoAlertDialog(page=home_view.app.page, content=log, title='console log', scroll=ft.ScrollMode.AUTO).show()
+
+
+def clear_console_log(*, home_view: 'HomeView', e):
+    fp = os.getenv('FLET_APP_CONSOLE')
+    if fp is None: ErrorAlertDialog(page=home_view.page, content='File "console.log" not found').show(); return
+
+    confirm_dlg = InfoAlertDialog(home_view.app.page, content='Are you sure you want to clear console.log file?',
+                                  title='clear console log', scroll=ft.ScrollMode.AUTO)
+
+    def clear_file_and_close():
+        with open(fp, 'w') as f:
+            f.write('')
+        home_view.page.close(confirm_dlg)
+
+    confirm_dlg.actions = [
+        ft.TextButton(text='Cancel', on_click=lambda _: home_view.page.close(confirm_dlg)),
+        ft.TextButton(text='Confirm', on_click=lambda _: clear_file_and_close()),
+    ]
+    confirm_dlg.show()

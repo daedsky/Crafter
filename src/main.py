@@ -11,8 +11,9 @@ def set_window_size(page: ft.Page):
 
 def main(page: ft.Page):
     set_window_size(page)
-    crafter_app = CrafterApp(page=page)
+    crafter_app = CrafterApp(page=page, debug=True)
     page.overlay.append(crafter_app.file_picker)
+    page.overlay.append(crafter_app.perms_handler)
     page.on_route_change = lambda route: route_change(page=page, app=crafter_app, route=route)
     page.go('/')
 

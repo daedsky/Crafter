@@ -32,13 +32,13 @@ class ErrorAlertDialog(ft.AlertDialog):
 
 
 class InfoAlertDialog(ft.AlertDialog):
-    def __init__(self, page: ft.Page, content: str, **kwargs):
-        self.page = page
-        super().__init__(modal=True, title=ft.Text('Info'), content=ft.Text(content),
+    def __init__(self, page: ft.Page, content: str, title: str = 'Info', **kwargs):
+        self.pagee = page
+        super().__init__(modal=True, title=ft.Text(title), content=ft.Text(content),
                          actions=[ft.TextButton('OK', on_click=lambda _: page.close(self))])
 
     def show(self):
-        self.page.open(self)
+        self.pagee.open(self)
 
 
 class CardViewContainer(ft.Container):
