@@ -32,9 +32,9 @@ class ErrorAlertDialog(ft.AlertDialog):
 
 
 class InfoAlertDialog(ft.AlertDialog):
-    def __init__(self, page: ft.Page, content: str, title: str = 'Info', **kwargs):
+    def __init__(self, page: ft.Page, content_text: str, title_text: str = 'Info', **kwargs):
         self.pagee = page
-        super().__init__(modal=True, title=ft.Text(title), content=ft.Text(content),
+        super().__init__(modal=True, title=ft.Text(title_text), content=ft.Text(content_text),
                          actions=[ft.TextButton('OK', on_click=lambda _: page.close(self))], scrollable=True,
                          **kwargs)
 

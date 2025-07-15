@@ -4,6 +4,7 @@ from models.app_info import AppInfo
 from components import admob
 import flet_permission_handler as fph
 from components.custom_controls import InfoAlertDialog
+import sys
 
 
 class CrafterApp:
@@ -49,3 +50,40 @@ class CrafterApp:
         req = self.perms_handler.request_permission(storage)
         if req != fph.PermissionStatus.GRANTED:
             InfoAlertDialog(page=self.page, content="App may misbehave.", title="Permission denied").show()
+
+    def show_disclaimer_if_not_accepted(self):
+        if self.page.client_storage.get(AppInfo.LICENSE_AGREED_KEY) is True:
+            self.page.go('/')
+            return
+
+        disclaimer_text = ft.Text(
+            spans=[
+                ft.TextSpan('''This app is provided "as-is" without any warranties or guarantees. 
+The developer is not responsible for any damage to your device or data that may occur from using this app. 
+By continuing to use this app, you acknowledge and accept this disclaimer.
+This app is open-source and licensed under the MIT License. 
+You can view the source code and license details at '''),
+                ft.TextSpan('git repo', style=ft.TextStyle(decoration=ft.TextDecoration.UNDERLINE),
+                            url=AppInfo.GIT_REPO)
+            ])
+
+        dialog = InfoAlertDialog(self.page, content_text='', title_text='Disclaimer')
+
+        def continue_app():
+            self.page.close(dialog)
+            self.page.client_storage.set(AppInfo.LICENSE_AGREED_KEY, True)
+            self.page.go('/')
+
+        def close_app():
+            if self.page.platform != ft.PagePlatform.ANDROID:
+                self.page.window.close()
+                return
+            sys.exit(0)
+
+        dialog.content = disclaimer_text
+        dialog.actions = [
+            ft.OutlinedButton('Exit', on_click=lambda _: close_app()),
+            ft.OutlinedButton('Continue', on_click=lambda _: continue_app()),
+        ]
+
+        dialog.show()

@@ -135,15 +135,15 @@ def show_console_log(*, home_view: 'HomeView', e):
     if fp is None: ErrorAlertDialog(page=home_view.page, content='File "console.log" not found').show(); return
     with open(fp, 'r') as f:
         log = f.read()
-    InfoAlertDialog(page=home_view.app.page, content=log, title='console log').show()
+    InfoAlertDialog(page=home_view.app.page, content_text=log, title_text='console log').show()
 
 
 def clear_console_log(*, home_view: 'HomeView', e):
     fp = os.getenv('FLET_APP_CONSOLE')
     if fp is None: ErrorAlertDialog(page=home_view.page, content='File "console.log" not found').show(); return
 
-    confirm_dlg = InfoAlertDialog(home_view.app.page, content='Are you sure you want to clear console.log file?',
-                                  title='clear console log', scroll=ft.ScrollMode.AUTO)
+    confirm_dlg = InfoAlertDialog(home_view.app.page, content_text='Are you sure you want to clear console.log file?',
+                                  title_text='clear console log', scroll=ft.ScrollMode.AUTO)
 
     def clear_file_and_close():
         with open(fp, 'w') as f:
