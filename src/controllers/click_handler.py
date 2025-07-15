@@ -9,6 +9,7 @@ from models.app_info import AppInfo
 from components import admob
 import os
 from components.custom_controls import InfoAlertDialog, ErrorAlertDialog
+from components.perms_manager import StoragePermsManager
 
 # type hinting <start>
 from typing import TYPE_CHECKING
@@ -23,7 +24,6 @@ if TYPE_CHECKING:
 # type hinting <end>
 
 def pick_gif_files(*, craft_layout: 'CraftLayout', e):
-    craft_layout.app.check_and_ask_storage_perms()
     craft_layout.app.file_picker.on_result = lambda x: on_result_gifs_picked(craft_layout, x)
     craft_layout.app.file_picker.pick_files(dialog_title='Pick GIF Files',
                                             allowed_extensions=['gif'],
@@ -31,13 +31,14 @@ def pick_gif_files(*, craft_layout: 'CraftLayout', e):
 
 
 def select_dest_folder(*, craft_layout: 'CraftLayout', e):
-    craft_layout.app.check_and_ask_storage_perms()
-    craft_layout.app.file_picker.on_result = lambda x: on_result_dest_folder_selected(craft_layout, x)
-    craft_layout.app.file_picker.get_directory_path(dialog_title='Select Destination Folder')
+    def func():
+        craft_layout.app.file_picker.on_result = lambda x: on_result_dest_folder_selected(craft_layout, x)
+        craft_layout.app.file_picker.get_directory_path(dialog_title='Select Destination Folder')
+
+    StoragePermsManager(app=craft_layout.app).check_ask_and_req_storage_perms(after_dialog_close_func=func)
 
 
 def pick_bootanimation_zip_file(*, install_layout: 'InstallLayout', e):
-    install_layout.app.check_and_ask_storage_perms()
     install_layout.app.file_picker.on_result = lambda x: on_result_bootanim_zip_picked(install_layout, e=x)
     install_layout.app.file_picker.pick_files(dialog_title='Pick bootanimation file',
                                               allowed_extensions=['zip'],

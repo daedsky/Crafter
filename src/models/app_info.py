@@ -7,3 +7,4 @@ class AppInfo(StrEnum):
     THEME_COLOR_KEY = 'io.crafter.Crafter.ThemeColor'
     LICENSE_AGREED_KEY = 'io.crafter.Crafter.LICENSE_AGREED'
     GIT_REPO = 'https://example.com'
+    STORAGE_PERMS_DENIED = 'io.crafter.Crafter.StoragePermsDenied'
