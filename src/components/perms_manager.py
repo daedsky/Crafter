@@ -21,7 +21,10 @@ class StoragePermsManager:
         self.PermTypeStorage = fph.PermissionType.MANAGE_EXTERNAL_STORAGE
 
     def check_ask_and_req_storage_perms(self, after_dialog_close_func: 'Callable' = None):
-        if self.page.platform != ft.PagePlatform.ANDROID: return
+        if self.page.platform != ft.PagePlatform.ANDROID:
+            if after_dialog_close_func is not None:
+                after_dialog_close_func()
+            return
         if self.page.client_storage.get(AppInfo.STORAGE_PERMS_DENIED) is True:
             if after_dialog_close_func is not None:
                 after_dialog_close_func()
@@ -35,6 +38,10 @@ class StoragePermsManager:
         self.show_ask_perms_dialog(after_dialog_close_func=after_dialog_close_func)
 
     def show_ask_perms_dialog(self, after_dialog_close_func: 'Callable' = None):
+        if self.page.platform != ft.PagePlatform.ANDROID:
+            if after_dialog_close_func is not None:
+                after_dialog_close_func()
+            return
         dialog = InfoAlertDialog(page=self.page,
                                  content_text='''Crafter application requires storage permissions to function optimally. 
     In certain cases, if these permissions are denied, the app may not operate as intended due to limitations in accessing files on scoped storage. 
@@ -58,9 +65,24 @@ class StoragePermsManager:
                           ft.OutlinedButton('Proceed', on_click=lambda _: proceed_for_perms())]
         dialog.show()
 
-    def request_storage_perms(self) -> None:
+    def request_storage_perms(self) -> None | fph.PermissionStatus:
+        if self.page.platform != ft.PagePlatform.ANDROID: return None
         req = self.perms_handler.request_permission(self.PermTypeStorage)
         if req != fph.PermissionStatus.GRANTED:
             InfoAlertDialog(page=self.page, content_text="App may not function properly.",
                             title_text="Storage Permission Denied").show()
             self.page.client_storage.set(AppInfo.STORAGE_PERMS_DENIED, True)
+        return req
+
+    def only_check_storage_perms(self):
+        if self.page.platform != ft.PagePlatform.ANDROID:
+            return type('MyClass', (), {'value': 'StoragePermission'})()
+        return self.perms_handler.check_permission(self.PermTypeStorage)
+
+    def is_storage_perms_granted(self):
+        if self.page.platform != ft.PagePlatform.ANDROID:
+            return 'StoragePerm'
+        status = self.perms_handler.check_permission(self.PermTypeStorage)
+        if status == fph.PermissionStatus.GRANTED:
+            return True
+        return status

@@ -10,6 +10,7 @@ from components import admob
 import os
 from components.custom_controls import InfoAlertDialog, ErrorAlertDialog
 from components.perms_manager import StoragePermsManager
+import flet_permission_handler as fph
 
 # type hinting <start>
 from typing import TYPE_CHECKING
@@ -19,6 +20,7 @@ if TYPE_CHECKING:
     from views.install_layout import InstallLayout
     from views.home_view import HomeView
     from views.settings_view import SettingsLayout
+    from components.perms_manager import StoragePermsManager
 
 
 # type hinting <end>
@@ -126,7 +128,7 @@ def check_root_access(*, settings_layout: 'SettingsLayout', listile: ft.ListTile
         listile.subtitle.value = 'Rooted'
         listile.subtitle.color = ft.Colors.GREEN
     else:
-        listile.subtitle.value = f'exit code: {process.returncode}\n{process.stderr}'
+        listile.subtitle.value = f'{process.stderr}'
         listile.subtitle.color = ft.Colors.RED
     listile.update()
 
@@ -156,3 +158,15 @@ def clear_console_log(*, home_view: 'HomeView', e):
         ft.TextButton(text='Confirm', on_click=lambda _: clear_file_and_close()),
     ]
     confirm_dlg.show()
+
+
+def goto_storage_perms_settings(*, settings_layout: 'SettingsLayout', storage_manager: 'StoragePermsManager',
+                                listile_perm_status: ft.ListTile, e):
+    if settings_layout.page.platform != ft.PagePlatform.ANDROID: return
+    status = storage_manager.request_storage_perms()
+    listile_perm_status.subtitle.value = status.value
+    if status == fph.PermissionStatus.GRANTED:
+        listile_perm_status.subtitle.color = ft.Colors.GREEN
+    else:
+        listile_perm_status.subtitle.color = ft.Colors.RED
+    listile_perm_status.update()
