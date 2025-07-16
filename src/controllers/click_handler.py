@@ -146,7 +146,7 @@ def clear_console_log(*, home_view: 'HomeView', e):
     if fp is None: ErrorAlertDialog(page=home_view.page, content='File "console.log" not found').show(); return
 
     confirm_dlg = InfoAlertDialog(home_view.app.page, content_text='Are you sure you want to clear console.log file?',
-                                  title_text='clear console log', scroll=ft.ScrollMode.AUTO)
+                                  title_text='clear console log')
 
     def clear_file_and_close():
         with open(fp, 'w') as f:

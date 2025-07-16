@@ -63,8 +63,8 @@ You can view the source code and license details at '''),
         def continue_app():
             self.page.close(dialog)
             self.page.client_storage.set(AppInfo.LICENSE_AGREED_KEY, True)
-            self.page.go('/')
             StoragePermsManager(app=self).check_ask_and_req_storage_perms()
+            self.page.go('/')
 
         def close_app():
             if self.page.platform != ft.PagePlatform.ANDROID:
