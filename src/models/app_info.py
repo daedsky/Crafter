@@ -8,3 +8,5 @@ class AppInfo(StrEnum):
     LICENSE_AGREED_KEY = 'io.crafter.Crafter.LICENSE_AGREED'
     GIT_REPO_URL = 'https://example.com'
     STORAGE_PERMS_DENIED = 'io.crafter.Crafter.StoragePermsDenied'
+    PRIVACY_POLICY_URL = 'https://example.com'
+    APP_LICENSE_URL = 'https://example.com'

@@ -29,7 +29,7 @@ class AboutLayout(ft.Column):
                        size=16)
 
     def get_layout(self):
-        IMAGE_APPICON = ft.Container(ft.Image(src='assets/icon.png', width=100, height=100), padding=5,
+        IMAGE_APPICON = ft.Container(ft.Image(src='/icon.png', width=100, height=100), padding=5,
                                      bgcolor=ft.Colors.SECONDARY_CONTAINER, border_radius=21)
         LABEL_APPNAME = ft.Text(value='Crafter for BootAnimation', text_align=ft.TextAlign.CENTER, size=18,
                                 weight=ft.FontWeight.BOLD, color=ft.Colors.PRIMARY)
@@ -43,14 +43,13 @@ class AboutLayout(ft.Column):
                               ),
             border_radius=8
         )
-
         LABEL_MADE_WITH = self.clickable_text(non_clickable_text='Made With: ', clickable_text='Python',
                                               on_click=lambda x: self.page.launch_url('https://python.org'))
 
         LABEL_GIT_REPO = self.clickable_text(non_clickable_text='Source Code available at: ', clickable_text='Github',
-                                             on_click=lambda x: self.page.launch_url('https://github.com'))
+                                             on_click=lambda x: self.page.launch_url(AppInfo.GIT_REPO_URL))
 
-        icon_python = ft.Image(src='assets/python_icon.png', width=20, height=20)
+        icon_python = ft.Image(src='/python_icon.png', width=20, height=20)
 
         container_made_with = cc.CardViewContainer(icon=ft.Icons.CODE_ROUNDED, title_text='Open Source',
                                                    content_controls=[
@@ -67,10 +66,22 @@ class AboutLayout(ft.Column):
                                                    content_controls=[
                                                        LABEL_LIB_FLET, LABEL_LIB_PILLOW
                                                    ])
+        LABEL_MIT_LICENSE = self.clickable_text(non_clickable_text='MIT License (No warranty or guarantee) ',
+                                                clickable_text='[Full Text]',
+                                                on_click=lambda x: self.page.launch_url(AppInfo.APP_LICENSE_URL))
+        LABEL_PRIVACY_POLICY = self.clickable_text(non_clickable_text='Privacy Policy ', clickable_text='[see here]',
+                                                   on_click=lambda x: self.page.launch_url(AppInfo.PRIVACY_POLICY_URL))
+        container_privacy_policy = cc.CardViewContainer(icon=ft.Icons.PRIVACY_TIP_OUTLINED,
+                                                        title_text='License & Privacy Policy',
+                                                        content_controls=[
+                                                            LABEL_MIT_LICENSE,
+                                                            LABEL_PRIVACY_POLICY
+                                                        ])
         structure = [
             container_first,
             container_made_with,
-            container_libraries
+            container_libraries,
+            container_privacy_policy
         ]
 
         if self.page.platform == ft.PagePlatform.ANDROID:
