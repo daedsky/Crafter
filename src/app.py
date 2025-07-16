@@ -55,7 +55,7 @@ By continuing to use this app, you acknowledge and accept this disclaimer.
 This app is open-source and licensed under the MIT License. 
 You can view the source code and license details at '''),
                 ft.TextSpan('git repo', style=ft.TextStyle(decoration=ft.TextDecoration.UNDERLINE),
-                            url=AppInfo.GIT_REPO)
+                            url=AppInfo.GIT_REPO_URL)
             ])
 
         dialog = InfoAlertDialog(self.page, content_text='', title_text='Disclaimer')
