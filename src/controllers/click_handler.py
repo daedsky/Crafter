@@ -20,7 +20,6 @@ if TYPE_CHECKING:
     from views.install_layout import InstallLayout
     from views.home_view import HomeView
     from views.settings_view import SettingsLayout
-    from components.perms_manager import StoragePermsManager
 
 
 # type hinting <end>
