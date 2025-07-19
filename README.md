@@ -44,6 +44,6 @@ their licenses at the provided URLs before use or redistribution:
   • Google Mobile Ads SDK: proprietary—see  
   https://developers.google.com/admob/terms
 
-- Pyjnius 
-  • License: MIT License 
-  • Full text: https://github.com/kivy/pyjnius/blob/master/LICENSE 
+- Pyjnius  
+  • License: MIT License  
+  • Full text: https://github.com/kivy/pyjnius/blob/master/LICENSE  
