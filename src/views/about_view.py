@@ -62,9 +62,12 @@ class AboutLayout(ft.Column):
         LABEL_LIB_PILLOW = self.clickable_text(non_clickable_text='', clickable_text='Pillow',
                                                on_click=lambda x: self.page.launch_url(
                                                    'https://python-pillow.github.io/'))
+        LABEL_LIB_PYJNIUS = self.clickable_text(non_clickable_text='', clickable_text='Pyjnius',
+                                                on_click=lambda x: self.page.launch_url(
+                                                    'https://pyjnius.readthedocs.io'))
         container_libraries = cc.CardViewContainer(icon=ft.Icons.EXTENSION_ROUNDED, title_text='Libraries Used',
                                                    content_controls=[
-                                                       LABEL_LIB_FLET, LABEL_LIB_PILLOW
+                                                       LABEL_LIB_FLET, LABEL_LIB_PILLOW, LABEL_LIB_PYJNIUS
                                                    ])
         LABEL_MIT_LICENSE = self.clickable_text(non_clickable_text='MIT License (No warranty or guarantee) ',
                                                 clickable_text='[Full Text]',
