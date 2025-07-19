@@ -248,3 +248,4 @@ storage/
 # Mine
 tests/
 todo.txt
+pyproject.toml
