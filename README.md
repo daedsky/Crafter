@@ -1,4 +1,5 @@
-# Crafter app
+# Crafter 
+Create android boot animations from gif files.
 
 ## Run the app
 
