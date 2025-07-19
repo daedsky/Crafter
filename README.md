@@ -42,4 +42,8 @@ their licenses at the provided URLs before use or redistribution:
 - Flet Google AdMob wrapper & Google Mobile Ads SDK  
   • Wrapper: typically inherits Flet’s Apache-2.0 terms  
   • Google Mobile Ads SDK: proprietary—see  
-  https://developers.google.com/admob/terms  
+  https://developers.google.com/admob/terms
+
+- Pyjnius
+  • License: MIT License
+  • Full text: https://github.com/kivy/pyjnius/blob/master/LICENSE
