@@ -43,9 +43,7 @@ class StoragePermsManager:
                 after_dialog_close_func()
             return
         dialog = InfoAlertDialog(page=self.page,
-                                 content_text='''Crafter application requires storage permissions to function optimally. 
-    In certain cases, if these permissions are denied, the app may not operate as intended due to limitations in accessing files on scoped storage. 
-    Please proceed to the next page to grant the necessary permissions. Thank you for your understanding.''',
+                                 content_text='''The Crafter application requires storage permissions to verify if the "SELECTED DESTINATION FOLDER" is empty. Without this permission, the app may not detect files in that folder due to scoped storage limitations. If permission is denied, please ensure you select an "EMPTY FOLDER" for the app to function correctly.''',
                                  title_text='Permission Request')
 
         def close_dialog():
@@ -69,7 +67,8 @@ class StoragePermsManager:
         if self.page.platform != ft.PagePlatform.ANDROID: return None
         req = self.perms_handler.request_permission(self.PermTypeStorage)
         if req != fph.PermissionStatus.GRANTED:
-            InfoAlertDialog(page=self.page, content_text="App may not function properly.",
+            InfoAlertDialog(page=self.page,
+                            content_text="App may not detect files in selected folder due to scoped storage limitations.",
                             title_text="Storage Permission Denied").show()
             self.page.client_storage.set(AppInfo.STORAGE_PERMS_DENIED, True)
         return req
