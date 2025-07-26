@@ -1,7 +1,6 @@
 import flet as ft
 from views.home_view import HomeView
 from models.app_info import AppInfo
-from components import admob
 import flet_permission_handler as fph
 from components.custom_controls import InfoAlertDialog
 import sys
@@ -17,7 +16,6 @@ class CrafterApp:
         self.home_view: HomeView = HomeView(app=self, route='/')
         self.load_preferences()
         self.interstitial_ad = None
-        self.setup_ads()
 
     def load_preferences(self) -> None:
         client_storage = self.page.client_storage
@@ -36,11 +34,6 @@ class CrafterApp:
             self.page.dark_theme = ft.Theme(color_scheme_seed=ft.Colors.PURPLE_400)
 
         self.page.update()
-
-    def setup_ads(self) -> None:
-        if self.page.platform != ft.PagePlatform.ANDROID: return
-        self.interstitial_ad = admob.get_new_interstitial_ad(app=self)
-        self.page.overlay.append(self.interstitial_ad)
 
     def show_disclaimer_if_not_accepted(self):
         if self.page.client_storage.get(AppInfo.LICENSE_AGREED_KEY) is True:

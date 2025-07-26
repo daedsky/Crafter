@@ -139,7 +139,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/flutter/windows/flutter/ephemeral/.plugin_symlinks/window_to_front/linux/flutter/ephemeral/.plugin_symlinks/window_to_front/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/build/flutter/windows/flutter/ephemeral/.plugin_symlinks/window_to_front/linux/flutter/ephemeral/.plugin_symlinks/window_to_front/build" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.11 virtualenv at ~/PythonVEnvs/bac311 (2)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.11 virtualenv at ~/PythonVEnvs/bac" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
