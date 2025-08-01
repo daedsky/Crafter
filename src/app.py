@@ -5,6 +5,7 @@ import flet_permission_handler as fph
 from components.custom_controls import InfoAlertDialog
 import sys
 from components.perms_manager import StoragePermsManager
+from components import admob
 
 
 class CrafterApp:
@@ -15,6 +16,8 @@ class CrafterApp:
         self.perms_handler: fph.PermissionHandler = fph.PermissionHandler()
         self.home_view: HomeView = HomeView(app=self, route='/')
         self.load_preferences()
+        self.interstitial_ad = None
+        self.setup_ads()
 
     def load_preferences(self) -> None:
         client_storage = self.page.client_storage
@@ -71,3 +74,8 @@ You can view the source code and license details at '''),
         ]
 
         dialog.show()
+
+    def setup_ads(self) -> None:
+        if self.page.platform != ft.PagePlatform.ANDROID: return
+        self.interstitial_ad = admob.get_new_interstitial_ad(app=self)
+        self.page.overlay.append(self.interstitial_ad)

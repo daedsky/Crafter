@@ -1,6 +1,7 @@
 import flet as ft
 from components import custom_controls as cc
 from controllers import click_handler as ch
+from components import admob
 from components.perms_manager import StoragePermsManager
 import flet_permission_handler as fph
 
@@ -82,6 +83,10 @@ class SettingsLayout(ft.Column):
             listile_check_root,
             listile_storage_perms
         ]
+
+        if self.page.platform == ft.PagePlatform.ANDROID:
+            structure.append(admob.get_new_banner_ad())
+            structure.append(admob.get_new_banner_ad())
 
         return structure
 

@@ -2,6 +2,7 @@ import flet as ft
 from components import custom_controls as cc
 from controllers import click_handler as ch
 from controllers import event_handler as ev
+from components import admob
 
 # type hinting <start>
 from typing import TYPE_CHECKING
@@ -76,5 +77,9 @@ class CraftLayout(ft.Column):
                      label_selected_files,
                      self.container_fileslist,
                      ft.Row([self.btn_generate])]
+
+        if self.page.platform == ft.PagePlatform.ANDROID:
+            structure.insert(4, admob.get_new_banner_ad())
+            structure.append(admob.get_new_banner_ad())
 
         return structure

@@ -4,6 +4,7 @@ from controllers import click_handler as ch
 from utils import extras
 import subprocess
 from controllers import event_handler as ev
+from components import admob
 
 # type hinting <start>
 from typing import TYPE_CHECKING
@@ -104,5 +105,8 @@ class InstallLayout(ft.Column):
                      label_device_info,
                      device_info_container,
                      ft.Row([self.btn_install])]
+        if self.page.platform == ft.PagePlatform.ANDROID:
+            structure.insert(3, admob.get_new_banner_ad())
+            structure.append(admob.get_new_banner_ad())
 
         return structure

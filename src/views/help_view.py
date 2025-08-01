@@ -1,5 +1,6 @@
 import flet as ft
 from components import custom_controls as cc
+from components import admob
 
 # type hinting <start>
 from typing import TYPE_CHECKING
@@ -60,6 +61,10 @@ Change the order of GIFs by long pressing their card.''')
             ),
             dont_know
         ]
+
+        if self.page.platform == ft.PagePlatform.ANDROID:
+            structure.append(admob.get_new_banner_ad())
+            structure.append(admob.get_new_banner_ad())
 
         return structure
 

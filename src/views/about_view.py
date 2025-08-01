@@ -2,6 +2,7 @@ import flet as ft
 from components import custom_controls as cc
 from models.app_info import AppInfo
 from typing import Callable
+from components import admob
 
 # type hinting <start>
 from typing import TYPE_CHECKING
@@ -85,6 +86,10 @@ class AboutLayout(ft.Column):
             container_libraries,
             container_privacy_policy
         ]
+
+        if self.page.platform == ft.PagePlatform.ANDROID:
+            structure.append(admob.get_new_banner_ad())
+            structure.append(admob.get_new_banner_ad())
 
         return structure
 

@@ -10,7 +10,7 @@ import os
 from components.custom_controls import InfoAlertDialog, ErrorAlertDialog
 from components.perms_manager import StoragePermsManager
 import flet_permission_handler as fph
-
+from components import admob
 
 # type hinting <start>
 from typing import TYPE_CHECKING
@@ -46,6 +46,7 @@ def pick_bootanimation_zip_file(*, install_layout: 'InstallLayout', e):
                                               allow_multiple=False)
 
 
+@admob.show_interstitial_ad
 def reload_homeview_control_layout(*, home_view: 'HomeView', nav_index: int, e):
     if nav_index == 0:
         home_view.craft_layout = home_view.get_new_craft_layout()
@@ -56,10 +57,12 @@ def reload_homeview_control_layout(*, home_view: 'HomeView', nav_index: int, e):
     home_view.update()
 
 
+@admob.show_interstitial_ad
 def craft_bootanimation(*, craft_layout: 'CraftLayout', e):
     craft_handler.start_craft(craft_layout=craft_layout)
 
 
+@admob.show_interstitial_ad
 def install_bootanimation(*, install_layout: 'InstallLayout', e):
     install_handler.install(install_layout=install_layout)
 
@@ -81,14 +84,17 @@ def toggle_theme_mode(*, home_view: 'HomeView', e):
     home_view.page.client_storage.set(key=AppInfo.THEME_MODE_KEY, value=home_view.page.theme_mode.value)
 
 
+@admob.show_interstitial_ad
 def goto_about_page(*, home_view: 'HomeView', e):
     home_view.page.go('/about')
 
 
+@admob.show_interstitial_ad
 def goto_settings_page(*, home_view: 'HomeView', e):
     home_view.page.go('/settings')
 
 
+@admob.show_interstitial_ad
 def goto_help_page(*, home_view: 'HomeView', e):
     home_view.page.go('/help')
 
