@@ -1,7 +1,6 @@
 import flet as ft
 from components import custom_controls as cc
 from models.app_info import AppInfo
-from typing import Callable
 from components import admob
 
 # type hinting <start>
@@ -22,10 +21,10 @@ class AboutLayout(ft.Column):
         self.controls: list[ft.Control] = self.get_layout()
 
     @staticmethod
-    def clickable_text(non_clickable_text: str, clickable_text: str, on_click: Callable) -> ft.Text:
+    def url_openable_text(non_clickable_text: str, clickable_text: str, urlink: str) -> ft.Text:
         return ft.Text(spans=[ft.TextSpan(non_clickable_text),
                               ft.TextSpan(clickable_text, style=ft.TextStyle(decoration=ft.TextDecoration.UNDERLINE),
-                                          on_click=on_click)],
+                                          url=urlink)],
                        size=16)
 
     def get_layout(self):
@@ -43,11 +42,12 @@ class AboutLayout(ft.Column):
                               ),
             border_radius=8
         )
-        LABEL_MADE_WITH = self.clickable_text(non_clickable_text='Made With: ', clickable_text='Python',
-                                              on_click=lambda x: self.page.launch_url('https://python.org'))
+        LABEL_MADE_WITH = self.url_openable_text(non_clickable_text='Made With: ', clickable_text='Python',
+                                                 urlink='https://python.org')
 
-        LABEL_GIT_REPO = self.clickable_text(non_clickable_text='Source Code available at: ', clickable_text='Github',
-                                             on_click=lambda x: self.page.launch_url(AppInfo.GIT_REPO_URL))
+        LABEL_GIT_REPO = self.url_openable_text(non_clickable_text='Source Code available at: ',
+                                                clickable_text='Github',
+                                                urlink=AppInfo.GIT_REPO_URL)
 
         icon_python = ft.Image(src='/python_icon.png', width=20, height=20)
 
@@ -57,23 +57,23 @@ class AboutLayout(ft.Column):
                                                        ft.Row([LABEL_GIT_REPO])
                                                    ])
 
-        LABEL_LIB_FLET = self.clickable_text(non_clickable_text='', clickable_text='Flet',
-                                             on_click=lambda x: self.page.launch_url('https://flet.dev'))
-        LABEL_LIB_PILLOW = self.clickable_text(non_clickable_text='', clickable_text='Pillow',
-                                               on_click=lambda x: self.page.launch_url(
-                                                   'https://python-pillow.github.io/'))
-        LABEL_LIB_PYJNIUS = self.clickable_text(non_clickable_text='', clickable_text='Pyjnius',
-                                                on_click=lambda x: self.page.launch_url(
-                                                    'https://pyjnius.readthedocs.io'))
+        LABEL_LIB_FLET = self.url_openable_text(non_clickable_text='', clickable_text='Flet',
+                                                urlink='https://flet.dev')
+        LABEL_LIB_PILLOW = self.url_openable_text(non_clickable_text='', clickable_text='Pillow',
+                                                  urlink=
+                                                  'https://python-pillow.github.io/')
+        LABEL_LIB_PYJNIUS = self.url_openable_text(non_clickable_text='', clickable_text='Pyjnius',
+                                                   urlink=
+                                                   'https://pyjnius.readthedocs.io')
         container_libraries = cc.CardViewContainer(icon=ft.Icons.EXTENSION_ROUNDED, title_text='Libraries Used',
                                                    content_controls=[
                                                        LABEL_LIB_FLET, LABEL_LIB_PILLOW, LABEL_LIB_PYJNIUS
                                                    ])
-        LABEL_MIT_LICENSE = self.clickable_text(non_clickable_text='MIT License (No warranty or guarantee) ',
-                                                clickable_text='[Full Text]',
-                                                on_click=lambda x: self.page.launch_url(AppInfo.APP_LICENSE_URL))
-        LABEL_PRIVACY_POLICY = self.clickable_text(non_clickable_text='Privacy Policy ', clickable_text='[see here]',
-                                                   on_click=lambda x: self.page.launch_url(AppInfo.PRIVACY_POLICY_URL))
+        LABEL_MIT_LICENSE = self.url_openable_text(non_clickable_text='MIT License (No warranty or guarantee) ',
+                                                   clickable_text='[Full Text]',
+                                                   urlink=AppInfo.APP_LICENSE_URL)
+        LABEL_PRIVACY_POLICY = self.url_openable_text(non_clickable_text='Privacy Policy ', clickable_text='[see here]',
+                                                      urlink=AppInfo.PRIVACY_POLICY_URL)
         container_privacy_policy = cc.CardViewContainer(icon=ft.Icons.PRIVACY_TIP_OUTLINED,
                                                         title_text='License & Privacy Policy',
                                                         content_controls=[
