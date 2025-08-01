@@ -25,10 +25,10 @@ class StoragePermsManager:
             if after_dialog_close_func is not None:
                 after_dialog_close_func()
             return
-        if self.page.client_storage.get(AppInfo.STORAGE_PERMS_DENIED) is True:
-            if after_dialog_close_func is not None:
-                after_dialog_close_func()
-            return
+        # if self.page.client_storage.get(AppInfo.STORAGE_PERMS_DENIED) is True:
+        #     if after_dialog_close_func is not None:
+        #         after_dialog_close_func()
+        #     return
         status = self.perms_handler.check_permission(self.PermTypeStorage)
 
         if status == fph.PermissionStatus.GRANTED:
@@ -43,7 +43,7 @@ class StoragePermsManager:
                 after_dialog_close_func()
             return
         dialog = InfoAlertDialog(page=self.page,
-                                 content_text='''The Crafter application requires storage permissions to verify if the "SELECTED DESTINATION FOLDER" is empty. Without this permission, the app may not detect files in that folder due to scoped storage limitations. If permission is denied, please ensure you select an "EMPTY FOLDER" for the app to function correctly.''',
+                                 content_text='''This application requires storage permissions to write files to "SELECTED DESTINATION FOLDER". Without this permission, the app may not work due to some permission issues with scoped storage.''',
                                  title_text='Permission Request')
 
         def close_dialog():
@@ -59,8 +59,8 @@ class StoragePermsManager:
             self.request_storage_perms()
             close_dialog()
 
-        dialog.actions = [ft.OutlinedButton('No (app can still work)', on_click=lambda _: option_no()),
-                          ft.OutlinedButton('Proceed', on_click=lambda _: proceed_for_perms())]
+        dialog.actions = [ft.OutlinedButton('No (app may not work)', on_click=lambda _: option_no()),
+                          ft.FilledButton('Grant', on_click=lambda _: proceed_for_perms())]
         dialog.show()
 
     def request_storage_perms(self) -> None | fph.PermissionStatus:
@@ -68,7 +68,7 @@ class StoragePermsManager:
         req = self.perms_handler.request_permission(self.PermTypeStorage)
         if req != fph.PermissionStatus.GRANTED:
             InfoAlertDialog(page=self.page,
-                            content_text="App may not detect files in selected folder due to scoped storage limitations.",
+                            content_text="App may not work correctly.",
                             title_text="Storage Permission Denied").show()
             self.page.client_storage.set(AppInfo.STORAGE_PERMS_DENIED, True)
         return req
