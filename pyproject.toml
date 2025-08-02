@@ -49,3 +49,7 @@ message = "Starting up the app…"
 [tool.flet.android.permission]
 #"android.permission.STORAGE" = true
 "android.permission.MANAGE_EXTERNAL_STORAGE" = true
+"com.google.android.gms.permission.AD_ID" = true
+
+[tool.flet.android.meta_data]
+"com.google.android.gms.ads.APPLICATION_ID" = "ca-app-pub-3940256099942544~3347511713"
