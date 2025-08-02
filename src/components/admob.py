@@ -2,6 +2,7 @@ import flet as ft
 import flet_ads
 from models.admob_units import AdmobUnit
 from typing import Callable
+import time
 
 # type hinting <start>
 from typing import TYPE_CHECKING
@@ -40,7 +41,12 @@ def show_interstitial_ad(function: Callable):
         else:
             app = list(kwargs.values())[0].app
         if app.page.platform == ft.PagePlatform.ANDROID:
-            app.interstitial_ad.show()
+            app: 'CrafterApp'
+            if (app.last_int_ad_show_time is None) or \
+                    (time.time() - app.last_int_ad_show_time) >= 60:
+                app.last_int_ad_show_time = time.time()
+                app.interstitial_ad.show()
+
         return function(*args, **kwargs)
 
     return wrapper

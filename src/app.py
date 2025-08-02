@@ -17,6 +17,7 @@ class CrafterApp:
         self.home_view: HomeView = HomeView(app=self, route='/')
         self.load_preferences()
         self.interstitial_ad = None
+        self.last_int_ad_show_time = None
         self.setup_ads()
 
     def load_preferences(self) -> None:
