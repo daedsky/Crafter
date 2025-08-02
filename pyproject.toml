@@ -35,7 +35,7 @@ path = "src"
 
 [tool.flet.android]
 split_per_abi = true
-min_sdk_version = 21
+min_sdk_version = 30
 target_sdk_version = 34
 
 [tool.flet.app.boot_screen]
