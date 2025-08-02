@@ -8,5 +8,5 @@ class AppInfo(StrEnum):
     LICENSE_AGREED_KEY = 'io.crafter.Crafter.LICENSE_AGREED'
     STORAGE_PERMS_DENIED = 'io.crafter.Crafter.StoragePermsDenied'
     GIT_REPO_URL = 'https://github.com/daedsky/Crafter/'
-    PRIVACY_POLICY_URL = 'https://daedsky.github.io/Crafter/privacy_policy'
+    PRIVACY_POLICY_URL = 'https://github.com/daedsky/Crafter/blob/master/docs/privacy_policy.md'
     APP_LICENSE_URL = 'https://github.com/daedsky/Crafter/blob/master/LICENSE'
