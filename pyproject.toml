@@ -1,14 +1,14 @@
 [project]
-name = "Crafter Common"
+name = "Crafter"
 version = "0.0.3"
-description = "Craft BootAnimations for Android devices (Common/Parent branch for both Crafter and CrafterFOSS)."
+description = "Craft BootAnimations for Android devices."
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [
     { name = "daedsky", email = "you@example.com" }
 ]
 dependencies = [
-    "flet", "pillow", "flet-permission-handler", "pyjnius"
+    "flet", "pillow", "flet-permission-handler", "pyjnius", "flet-ads"
 ]
 
 [tool.flet]
@@ -22,7 +22,7 @@ compile.cleanup = true # --cleanup-on-compile
 
 # project display name that is used as an app title on Android and iOS home screens,
 # shown in window titles and about app dialogs on desktop.
-product = "Crafter Common"
+product = "Crafter"
 
 # company name to display in about app dialogs
 company = "Fusion Reactors"
