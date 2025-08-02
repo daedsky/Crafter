@@ -13,8 +13,8 @@ if TYPE_CHECKING:
 # type hinting <end>
 
 def route_change(page: ft.Page, app: 'CrafterApp', route):
-    page.views.clear()
     if page.route == '/':
+        page.views.clear()
         page.views.append(app.home_view)
     if page.route == '/settings':
         page.views.append(SettingsView(app=app, route='/settings'))
@@ -24,3 +24,7 @@ def route_change(page: ft.Page, app: 'CrafterApp', route):
         page.views.append(AboutView(app=app, route='/about'))
 
     page.update()
+
+def view_pop(page, view):
+    page.views.pop()
+    page.go(page.views[-1].route)
